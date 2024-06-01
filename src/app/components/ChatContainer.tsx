@@ -23,6 +23,7 @@ const ChatContainer: React.FC = () => {
   const [ systemPromptValue, setSystemPromptValue] = useState<string>(initialPrompt);
   const [ systemPrompt, setSystemPrompt ] = useState<string>(initialPrompt);
   const [ welcome, setWelcome ] = useState<string>(initalWelcome);
+  const [ showSidebar, setShowSidebar ] = useState<boolean>(true);
 
   useEffect(() => {
     const prompt = localStorage.getItem('systemPrompt');
@@ -40,6 +41,7 @@ const ChatContainer: React.FC = () => {
       role: 'user',
       content: systemPrompt,
     }]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [systemPrompt]);
 
   const handleSubmit = (value: string) => {
@@ -54,7 +56,6 @@ const ChatContainer: React.FC = () => {
   }
 
   const handleNewSystemPrompt = (e: FormEvent<HTMLFormElement>) => {
-  
     setSystemPrompt(systemPromptValue);
     localStorage.setItem('systemPrompt', systemPromptValue);
     localStorage.setItem('welcome', welcome);
@@ -62,6 +63,10 @@ const ChatContainer: React.FC = () => {
 
   const handleWelcomeChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setWelcome(e.target.value);
+  }
+
+  const handleToggleSidebar = () => {
+    setShowSidebar(prev => !prev);
   }
 
   return (
@@ -77,25 +82,32 @@ const ChatContainer: React.FC = () => {
             </div>
           </Stack>
         </div>
-        <Container width="600px">
-          <div className={styles.systemPrompt}>
-            <form onSubmit={handleNewSystemPrompt} style={{ height: "100%"}}>
-              <Stack direction="column" gap="10px">
-                System prompt:
-                <Container grow>
-                  <Textarea onChange={handleChange} value={systemPrompt} />
-                </Container>
-                Welcome message:
-                <Container height="100px">
-                    <Textarea onChange={handleWelcomeChange} value={welcome} />
-                </Container>
-                <Container height="80px" padding="20px 0">
-                  <Button type="submit">Set system prompt</Button>
-                </Container>
-              </Stack>
-            </form>
-          </div>
-        </Container>
+        { showSidebar ?
+          <Container width="600px">
+            <div className={styles.systemPrompt}>
+              <form onSubmit={handleNewSystemPrompt} style={{ height: "100%"}}>
+                <Stack direction="column" gap="10px">
+                  <Container height="40px">
+                    <Stack justify="space-between" align="center">
+                      System prompt:
+                        <Button onClick={handleToggleSidebar}>Close</Button>
+                    </Stack>
+                  </Container>
+                  <Container grow>
+                    <Textarea onChange={handleChange} value={systemPrompt} />
+                  </Container>
+                  Welcome message:
+                  <Container height="100px">
+                      <Textarea onChange={handleWelcomeChange} value={welcome} />
+                  </Container>
+                  <Container height="80px" padding="20px 0">
+                    <Button type="submit">Set system prompt</Button>
+                  </Container>
+                </Stack>
+              </form>
+            </div>
+          </Container>
+        : <div style={{ position: 'absolute', top: '20px', right: '20px'}}><Button onClick={handleToggleSidebar}>Show</Button></div> }
       </Stack>
     </Container>
   );
