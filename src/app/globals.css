@@ -1,0 +1,10 @@
+body {
+  margin: 0;
+}
+
+/* Apply box-sizing to all elements */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
