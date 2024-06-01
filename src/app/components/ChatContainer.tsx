@@ -80,10 +80,12 @@ const ChatContainer: React.FC = () => {
         <Container width="600px">
           <div className={styles.systemPrompt}>
             <form onSubmit={handleNewSystemPrompt} style={{ height: "100%"}}>
-              <Stack direction="column" gap="20">
+              <Stack direction="column" gap="10px">
+                System prompt:
                 <Container grow>
                   <Textarea onChange={handleChange} value={systemPrompt} />
                 </Container>
+                Welcome message:
                 <Container height="100px">
                     <Textarea onChange={handleWelcomeChange} value={welcome} />
                 </Container>
