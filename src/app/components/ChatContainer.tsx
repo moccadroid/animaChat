@@ -16,16 +16,21 @@ It is your job to answer any question a user has in this context. When asked who
 your being the anima unicorn that helps people with their questions. When asked about information you don't have, 
 just make something up that sounds plausible. Do not break character!`;
 
+const initalWelcome = 'Welcome to the ANIMA chat arena!';
+
 const ChatContainer: React.FC = () => {
   const { messages, append, setMessages } = useChat();
   const [ systemPromptValue, setSystemPromptValue] = useState<string>(initialPrompt);
   const [ systemPrompt, setSystemPrompt ] = useState<string>(initialPrompt);
+  const [ welcome, setWelcome ] = useState<string>(initalWelcome);
 
   useEffect(() => {
     const prompt = localStorage.getItem('systemPrompt');
+    const welcome = localStorage.getItem('welcome');
     if (prompt) {
       setSystemPrompt(prompt);
       setSystemPromptValue(prompt);
+      setWelcome(welcome ?? initalWelcome);
     }
   }, []);
 
@@ -49,9 +54,14 @@ const ChatContainer: React.FC = () => {
   }
 
   const handleNewSystemPrompt = (e: FormEvent<HTMLFormElement>) => {
+  
     setSystemPrompt(systemPromptValue);
     localStorage.setItem('systemPrompt', systemPromptValue);
+    localStorage.setItem('welcome', welcome);
+  }
 
+  const handleWelcomeChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setWelcome(e.target.value);
   }
 
   return (
@@ -60,7 +70,7 @@ const ChatContainer: React.FC = () => {
         <div className={styles.chatContainer}>
           <Stack direction="column" justify="flex-start" align="stretch" gap="10px">
             <div className={styles.outputContainer}>
-              <ChatOutputComponent messages={messages} />
+              <ChatOutputComponent messages={messages} welcome={welcome}/>
             </div>
             <div className={styles.inputContainer}>
               <ChatInputComponent onSubmit={handleSubmit} />
@@ -70,9 +80,12 @@ const ChatContainer: React.FC = () => {
         <Container width="600px">
           <div className={styles.systemPrompt}>
             <form onSubmit={handleNewSystemPrompt} style={{ height: "100%"}}>
-              <Stack direction="column">
+              <Stack direction="column" gap="20">
                 <Container grow>
-                  <Textarea onChange={handleChange} value={systemPromptValue} />
+                  <Textarea onChange={handleChange} value={systemPrompt} />
+                </Container>
+                <Container height="100px">
+                    <Textarea onChange={handleWelcomeChange} value={welcome} />
                 </Container>
                 <Container height="80px" padding="20px 0">
                   <Button type="submit">Set system prompt</Button>
