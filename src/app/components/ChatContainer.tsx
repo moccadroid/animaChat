@@ -94,7 +94,7 @@ const ChatContainer: React.FC = () => {
                     </Stack>
                   </Container>
                   <Container grow>
-                    <Textarea onChange={handleChange} value={systemPrompt} />
+                    <Textarea onChange={handleChange} value={systemPromptValue} />
                   </Container>
                   Welcome message:
                   <Container height="100px">
