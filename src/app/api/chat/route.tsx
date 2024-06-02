@@ -9,6 +9,7 @@ export async function POST(req: Request) {
   const result = await streamText({
     model: openai('gpt-3.5-turbo-0125'),
     messages: convertToCoreMessages(messages),
+    system: `The current date is: ${(new Date()).toISOString()}`
     //tools,
     //toolChoice: 'auto',
   });
