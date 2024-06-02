@@ -8,8 +8,8 @@ import Stack from './ui/Stack';
 import styles from './ChatContainer.module.scss';
 import Container from './ui/Container';
 import Textarea from './ui/Textarea';
-import { generateRandomString } from '@/utils/generateRandom';
 import Button from './ui/Button';
+import { generateId } from 'ai';
 
 const initialPrompt = `SYSTEM PROMPT: You are the helpful chatbot of ANIMA. A contemporary dance school, with a speciality in Martha Graham technique. 
 It is your job to answer any question a user has in this context. When asked who you are, come up with a short story about
@@ -37,7 +37,7 @@ const ChatContainer: React.FC = () => {
 
   useEffect(() => {
     setMessages([{
-      id: generateRandomString(4),
+      id: generateId(),
       role: 'user',
       content: systemPrompt,
     }]);

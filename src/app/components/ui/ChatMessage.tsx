@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './ChatMessage.module.scss';
+import AugmentedText from './AugmentedText';
 
 interface ChatMessageProps {
   role: 'user' | 'assistant' | 'system' | 'function' | 'data' | 'tool';
@@ -16,7 +17,11 @@ const ChatMessage: React.FC<ChatMessageProps> = ({  role, content, userLabel = '
       <div className={styles.messageHeader}>
         {role === 'user' ? userLabel : aiLabel}
       </div>
-      <div className={styles.messageContent}>{content}</div>
+      <div className={styles.messageContent}>
+        <AugmentedText replaceUrl>
+          {content}
+        </AugmentedText>
+      </div>
     </div>
   );
 };
